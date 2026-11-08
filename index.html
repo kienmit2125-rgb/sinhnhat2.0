@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Sinh Nhật Lương Minh Đức 20 Tuổi!</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Dễ Thương -->
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Itim&display=display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Itim', cursive, sans-serif;
+            background: linear-gradient(135deg, #fef08a 0%, #fbcfe8 50%, #bae6fd 100%);
+        }
+
+        .title-font {
+            font-family: 'Comfortaa', cursive;
+        }
+
+        /* Cake Styles */
+        .cake-container {
+            position: relative;
+            width: 160px;
+            height: 120px;
+            margin: 0 auto;
+        }
+
+        .cake-bottom {
+            width: 160px;
+            height: 50px;
+            background: #f472b6;
+            border-radius: 12px 12px 16px 16px;
+            position: absolute;
+            bottom: 0;
+            border: 4px solid #db2777;
+            box-shadow: inset 0 -8px 0 rgba(0,0,0,0.1);
+        }
+
+        .cake-top {
+            width: 120px;
+            height: 45px;
+            background: #fef08a;
+            border-radius: 12px 12px 0 0;
+            position: absolute;
+            bottom: 46px;
+            left: 20px;
+            border: 4px solid #eab308;
+            box-shadow: inset 0 -6px 0 rgba(0,0,0,0.08);
+        }
+
+        .frosting {
+            width: 128px;
+            height: 16px;
+            background: #ffffff;
+            position: absolute;
+            bottom: 80px;
+            left: 16px;
+            border-radius: 10px;
+        }
+
+        .candle {
+            width: 12px;
+            height: 35px;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            position: absolute;
+            bottom: 90px;
+            left: 74px;
+            border-radius: 4px;
+            border: 2px solid #1e40af;
+        }
+
+        .flame {
+            width: 14px;
+            height: 20px;
+            background: #f97316;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            bottom: 127px;
+            left: 73px;
+            animation: flicker 0.6s infinite alternate;
+            box-shadow: 0 0 12px #f97316, 0 0 20px #eab308;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.15) rotate(2deg); opacity: 0.9; }
+        }
+
+        .flame.off {
+            display: none;
+        }
+
+        .smoke {
+            display: none;
+            width: 6px;
+            height: 20px;
+            background: #94a3b8;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 128px;
+            left: 77px;
+            opacity: 0.6;
+            animation: rise 1.5s forwards;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-30px) scale(2); opacity: 0; }
+        }
+
+        /* Bounce Animation */
+        .bounce-slow {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4 flex flex-col justify-between items-center text-slate-800">
+
+    <!-- Container Chính -->
+    <div class="max-w-lg w-full bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border-4 border-yellow-300 text-center relative overflow-hidden">
+        
+        <!-- Icon trang trí -->
+        <div class="text-4xl mb-2 bounce-slow">🎉 🥳 🎈</div>
+
+        <!-- 1. Tiêu đề to nhí nhố -->
+        <h1 class="text-2xl sm:text-3xl font-bold title-font text-pink-500 mb-1">
+            CHÚC MỪNG SINH NHẬT
+        </h1>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-blue-600 mb-2 tracking-wide">
+            LƯƠNG MINH ĐỨC
+        </h2>
+        <div class="inline-block bg-yellow-300 text-yellow-900 font-bold px-4 py-1 rounded-full text-lg mb-6 shadow-sm">
+            🎂 TRÒN 20 TUỔI RỒI NHÉ! 🎂
+        </div>
+
+        <!-- 2. Bánh sinh nhật CSS & Thổi nến -->
+        <div class="my-6 py-2 bg-pink-50/80 rounded-2xl border-2 border-dashed border-pink-300">
+            <div class="cake-container mb-4">
+                <div id="flame" class="flame"></div>
+                <div id="smoke" class="smoke"></div>
+                <div class="candle"></div>
+                <div class="frosting"></div>
+                <div class="cake-top"></div>
+                <div class="cake-bottom"></div>
+            </div>
+
+            <button id="btn-blow" onclick="blowCandle()" class="bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-white font-bold py-2.5 px-6 rounded-full shadow-lg transform active:scale-95 transition text-base">
+                💨 THỔI NẾN NGAY!
+            </button>
+            <p id="candle-status" class="text-xs text-pink-500 mt-2 font-bold">Thổi nến ước một điều ước lầy lội đi Đức ơi!</p>
+        </div>
+
+        <!-- 3. Thẻ lời chúc lầy lội -->
+        <div class="text-left bg-blue-50/80 rounded-2xl p-4 border-2 border-blue-200 mb-6 space-y-3">
+            <h3 class="text-lg font-bold text-blue-600 text-center flex items-center justify-center gap-2">
+                <span>💌</span> GÓC LỜI CHÚC SIÊU LẦY
+            </h3>
+            <ul class="space-y-2 text-slate-700 text-base">
+                <li class="flex items-start gap-2">
+                    <span>😎</span>
+                    <span><strong>Chúc Đức 20 tuổi:</strong> Bớt đẹp trai lại một tí cho anh em nhờ chứ hào quang chói quá!</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span>💸</span>
+                    <span><strong>Sang tuổi mới:</strong> Mau giàu nhanh để bao anh em đi ăn trưa ăn tối tẹt bô nhé!</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span>🚫</span>
+                    <span><strong>Hết tuổi TEEN rồi nghe ông anh!</strong> Từ nay chính thức làm người lớn uy tín rồi nha.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span>🎯</span>
+                    <span><strong>Học hành & Sự nghiệp:</strong> Thi đâu qua đó, Hết nợ nần, Sớm lên radian trong valorant, deadline né xa 800m!</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 4. Nút bấm Quà Độc Lạ Troll -->
+        <button onclick="openGiftTroll()" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md transform active:scale-95 transition text-lg flex items-center justify-center gap-2">
+            <span>🎁</span> BẤM VÀO ĐÂY ĐỂ NHẬN QUÀ ĐỘC LẠ!
+        </button>
+
+    </div>
+
+    <!-- Modal Thông Báo Troll -->
+    <div id="troll-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center border-4 border-pink-400 shadow-2xl transform transition-all scale-95">
+            <div class="text-6xl mb-3">🤪</div>
+            <h3 class="text-2xl font-bold text-pink-500 mb-2">BẤM VÀO LÀ MẮC BẪY RỒI!</h3>
+            <p class="text-slate-700 text-base mb-6 font-semibold leading-relaxed">
+                "Món quà lớn nhất tuổi 20 của Đức chính là <span class="text-blue-600 font-bold">tình bạn diệu kỳ với tôi</span> chứ còn đòi quà gì nữa! 🤪✨"
+            </p>
+            <button onclick="closeTrollModal()" class="bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-bold py-2.5 px-6 rounded-full text-base shadow">
+                Ok nhận luôn, chịu ông rồi! 😂
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-6 text-center text-slate-600 text-xs font-semibold">
+        Chúc Lương Minh Đức tuổi 20 vui vẻ & luôn luôn quậy tới bến! ✨
+    </footer>
+
+    <!-- Logic JavaScript -->
+    <script>
+        // 5. Hiệu ứng confetti nhẹ nhàng khi tải trang
+        window.addEventListener('load', () => {
+            confetti({
+                particleCount: 50,
+                spread: 60,
+                origin: { y: 0.6 }
+            });
+        });
+
+        // Thổi nến
+        let candleBlown = false;
+        function blowCandle() {
+            const flame = document.getElementById('flame');
+            const smoke = document.getElementById('smoke');
+            const status = document.getElementById('candle-status');
+            const btn = document.getElementById('btn-blow');
+
+            if (!candleBlown) {
+                flame.classList.add('off');
+                smoke.style.display = 'block';
+                candleBlown = true;
+
+                status.textContent = "🎉 Wohoo! Ước mơ tuổi 20 của Đức đã thành hiện thực!";
+                status.classList.remove('text-pink-500');
+                status.classList.add('text-emerald-600');
+                btn.textContent = "🔥 BẬT LẠI NẾN";
+
+                // Bắn pháo bông vui vẻ
+                confetti({
+                    particleCount: 100,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            } else {
+                flame.classList.remove('off');
+                smoke.style.display = 'none';
+                candleBlown = false;
+
+                status.textContent = "Thổi nến ước một điều ước lầy lội đi Đức ơi!";
+                status.classList.remove('text-emerald-600');
+                status.classList.add('text-pink-500');
+                btn.textContent = "💨 THỔI NẾN NGAY!";
+            }
+        }
+
+        // Hiện / Ẩn Pop-up Troll Quà
+        function openGiftTroll() {
+            document.getElementById('troll-modal').classList.remove('hidden');
+            confetti({
+                particleCount: 40,
+                spread: 50,
+                origin: { y: 0.5 }
+            });
+        }
+
+        function closeTrollModal() {
+            document.getElementById('troll-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
